@@ -1,7 +1,7 @@
 NSUT Gym Management System Project Using PHP And MySQL
 HOW TO RUN THE GYM MANAGEMENT SYSTEM PROJECT USING PHP AND MYSQL (CODE CAMP BD - GYM MANAGEMENT SYSTEM) PROJECT
 1.	Download The NSUT Online Gym Management System Project Zip File.
-2.	Extract The File And Copy Gym Folde.r
+2.	Extract The File And Copy Gym Folde.r 
 3.	Paste Inside Root Directory  (For Xampp :- Xampp/HtdDocs; For Wamp :- Wamp/Www, For Lamp :- Var/Www/Html)
 4.	Open PHPMyAdmin.
 5.	Create A Database With Name: nsut_gym
