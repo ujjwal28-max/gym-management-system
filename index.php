@@ -1,139 +1,235 @@
-<?php 
-session_start();
+<?php  session_start();
 error_reporting(0);
-include 'include/config.php';
-$uid=$_SESSION['uid'];
-
-if(isset($_POST['submit']))
-{ 
-$pid=$_POST['pid'];
-
-
-$sql="INSERT INTO tblbooking (package_id,userid) Values(:pid,:uid)";
-
-$query = $dbh -> prepare($sql);
-$query->bindParam(':pid',$pid,PDO::PARAM_STR);
-$query->bindParam(':uid',$uid,PDO::PARAM_STR);
-$query -> execute();
-echo "<script>alert('Package has been booked.');</script>";
-echo "<script>window.location.href='booking-history.php'</script>";
-
-}
-
+include  'include/config.php'; 
+if (strlen($_SESSION['adminid']==0)) {
+  header('location:logout.php');
+  } else{
 ?>
 <!DOCTYPE html>
-<html lang="zxx">
-<head>
-	<title>NSUT Gym Management System</title>
-	<meta charset="UTF-8">
-	<meta name="description" content="Ahana Yoga HTML Template">
-	<meta name="keywords" content="yoga, html">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
+  <head>
+    
+    <title>Admin | Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<link rel="stylesheet" href="css/bootstrap.min.css"/>
-	<link rel="stylesheet" href="css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
-	<link rel="stylesheet" href="css/nice-select.css"/>
-	<link rel="stylesheet" href="css/magnific-popup.css"/>
-	<link rel="stylesheet" href="css/slicknav.min.css"/>
-	<link rel="stylesheet" href="css/animate.css"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 
-	<link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body class="app sidebar-mini rtl">
 
-</head>
-<body>
-	
-	<?php include 'include/header.php';?>
-	
-	<section class="page-top-section set-bg" data-setbg="img/page-top-bg.jpg">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-7 m-auto text-white">
-					<h2>Home</h2>
-					<p>Physical Activity Can Improve Your Health</p>
-				</div>
-			</div>
-		</div>
-	</section>
+    <?php include 'include/header.php'; ?>
+    
+    <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
+    <?php include 'include/sidebar.php'; ?>
+    <main class="app-content">
+      <div class="app-title">
+        <div>
+          <h1><i class="fa fa-dashboard"></i> Dashboard</h1>
+        </div>
+        <ul class="app-breadcrumb breadcrumb">
+          <li class="breadcrumb-item"><i class="fa fa-home fa-lg"></i></li>
+          <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        </ul>
+      </div>
+      <marquee onMouseOver="this.stop()" style="color: #e92f33;" onMouseOut="this.start()">This Is NSUT's Exclusive Facility.!</marquee>
+
+      <div class="row">
+          	<!-- 
+
+
+	- Author Name: Samridhi, Ujjwal
+	 -->
+        <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalcat FROM tblcategory;";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  foreach($results as $result)
+                  {
+                  ?>
+                       <a href="add-category.php">  
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+            <div class="info">
+              <h4>Listed Categories</h4>
+              <p><b><?php echo $result->totalcat;?></b></p>
+            </div>
+          </div></a>
+            <?php  } ?>
+        </div>
+	<!-- 
+
+
+	- Author Name: Samridhi, Ujjwal
+	 -->
+  <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalpackagetype FROM tblcategory;";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  foreach($results as $result)
+                  {
+                  ?>
+                       <a href="add-package.php">  
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+            <div class="info">
+              <h4>Listed Package Type</h4>
+              <p><b><?php echo $result->totalpackagetype;?></b></p>
+            </div>
+          </div></a>
+            <?php  } ?>
+        </div>
+
+
+        <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalpost FROM tbladdpackage;";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  $cnt=1;
+                  if($query -> rowCount() > 0)
+                  {
+                  foreach($results as $result)
+                  {
+                  ?>
+	<!-- 
+
+
+	- Author Name: Samridhi, Ujjwal
+	 -->
+                   <a href="manage-post.php">  
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-file fa-3x"></i>
+            <div class="info">
+              <h4>Listed Packages</h4>
+              <p><b><?php echo $result->totalpost;?></b></p>
+            </div>
+          </div>
+        </a>
+            <?php  $cnt=$cnt+1; } } ?>
+        </div>
+      
+
+        <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalbookings FROM tblbooking;";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  foreach($results as $result)
+                  {
+                  ?>
+                  <a href="booking-history.php"> 
+          <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
+            <div class="info">
+              <h4>Total Bookings</h4>
+              <p><b><?php echo $result->totalbookings;?></b></p>
+            </div>
+          </div>
+        </a>
+            <?php  } ?>
+        </div>
+	<!-- 
+
+
+	- Author Name: Samridhi, Ujjwal
+	 -->
+    <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalbookings FROM tblbooking where paymentType is null or paymentType=''";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  foreach($results as $result)
+                  {
+                  ?>
+                  <a href="new-bookings.php"> 
+          <div class="widget-small danger coloured-icon"><i class="icon fa fa-user fa-3x"></i>
+            <div class="info">
+              <h4>New Bookings</h4>
+              <p><b><?php echo $result->totalbookings;?></b></p>
+            </div>
+          </div>
+        </a>
+            <?php  } ?>
+        </div>
 
 	<!-- 
 
 
 	- Author Name: Samridhi, Ujjwal
 	 -->
+    <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalbookings FROM tblbooking where paymentType='Partial Payment'";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  foreach($results as $result)
+                  {
+                  ?>
+                  <a href="partial-payment-bookings.php"> 
+          <div class="widget-small warning coloured-icon"><i class="icon fa fa-user fa-3x"></i>
+            <div class="info">
+              <h4>Partial Payment Bookings</h4>
+              <p><b><?php echo $result->totalbookings;?></b></p>
+            </div>
+          </div>
+        </a>
+            <?php  } ?>
+        </div>
 
-	<section class="pricing-section spad">
-		<div class="container">
-			<div class="section-title text-center">
-				<img src="img/icons/logo-icon.png" alt="">
-				<h2>Pricing Plans</h2>
-				<p>Practice Yoga To Attain Ethereal Beauty, Take Care Of Your Soul And Enjoy Life To The Fullest!</p>
-			</div>
-			<div class="row">
-				        <?php 
-
-						$sql ="SELECT id, category, titlename, PackageType, PackageDuration, Price, uploadphoto, Description, create_date from tbladdpackage";
-						$query= $dbh -> prepare($sql);
-						$query-> execute();
-						$results = $query -> fetchAll(PDO::FETCH_OBJ);
-						$cnt=1;
-						if($query -> rowCount() > 0)
-						{
-						foreach($results as $result)
-						{
-						?>
-				<div class="col-lg-3 col-sm-6">
-					<div class="pricing-item begginer">
-						<div class="pi-top">
-							<h4><?php echo $result->titlename;?></h4>
-						</div>
-						<div class="pi-price">
-							<h3><?php echo htmlentities($result->Price);?></h3>
-							<p>	<?php echo $result->PackageDuration;?></p>
-						</div>
-						<ul>
-							<?php echo $result->Description;?>
-							
-						</ul>
-						<?php if(strlen($_SESSION['uid'])==0): ?>
-						<a href="login.php" class="site-btn sb-line-gradient">Booking Now</a>
-						<?php else :?>
-							 <form method='post'>
-                            <input type='hidden' name='pid' value='<?php echo htmlentities($result->id);?>'>
-                          
-
-                        <input class='site-btn sb-line-gradient' type='submit' name='submit' value='Booking Now' onclick="return confirm('Do ');"> 
-                        </form> 
-							 <?php endif;?>
-					</div>
-				</div>
-				<?php  $cnt=$cnt+1; } } ?>
-			</div>
-		</div>
-	</section>
-		<!-- 
-
-
-	- Author Name: Samridhi, Ujjwal
-	 -->
-
-	<?php include 'include/footer.php'; ?>
-
-
-	<div class="back-to-top"><img src="img/icons/up-arrow.png" alt=""></div>
-
-	<script src="js/vendor/jquery-3.2.1.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/jquery.slicknav.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/jquery.nice-select.min.js"></script>
-	<script src="js/jquery-ui.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
-	<script src="js/main.js"></script>
 	<!-- 
 
 
 	- Author Name: Samridhi, Ujjwal
 	 -->
-	</body>
+         <div class="col-md-6 col-lg-6">
+          <?php
+                  $sql="SELECT count(id) as totalbookings FROM tblbooking where paymentType='Full Payment'";
+                  $query= $dbh->prepare($sql);
+                  $query-> execute();
+                  $results = $query -> fetchAll(PDO::FETCH_OBJ);
+                  foreach($results as $result)
+                  {
+                  ?>
+                  <a href="full-payment-bookings.php"> 
+          <div class="widget-small primary coloured-icon"><i class="icon fa fa-user fa-3x"></i>
+            <div class="info">
+              <h4>Full Payment Bookings</h4>
+              <p><b><?php echo $result->totalbookings;?></b></p>
+            </div>
+          </div>
+        </a>
+            <?php  } ?>
+        </div>
+
+      	<!-- 
+
+
+	- Author Name: Samridhi, Ujjwal
+	 -->
+      </div>
+     
+    </main>
+
+    <?php include_once 'include/footer.php' ?>
+
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+    
+    <script src="js/plugins/pace.min.js"></script>
+    
+    <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+    
+  </body>
 </html>
+<?php } ?>
