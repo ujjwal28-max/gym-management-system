@@ -10,7 +10,7 @@ HOW TO RUN THE GYM MANAGEMENT SYSTEM PROJECT USING PHP AND MYSQL (CODE CAMP BD -
 8.	Run http://localhost/"File Name"
 
 DEVELOPER INFORMATION
-1.	Authors Name: Samridhi Kanwar, Ujjwal Singla.                                                                             
+1.	Authors Name: SAMRIDHI KANWAR , UJJWAL SINGLA .                                                                             
 2.	Email ID:  samridhi.kanwar.ug22@nsut.ac.in , ujjwal.singla.ug22@nsut.ac.in 
 3. Database Name->  nsut_gym
 
